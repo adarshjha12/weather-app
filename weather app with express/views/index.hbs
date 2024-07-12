@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>Weather App</h1>
+    </nav>
+    <div class="container">
+        <form id="weatherForm">
+            <input type="text" id="cityInput" placeholder="Enter city name">
+            <button type="submit">Get Weather</button>
+        </form>
+        <div id="results">
+            <div id="weatherResult" class="weather-result">
+            <!-- Weather information will be displayed here -->
+            </div>
+
+            <div id="weatherImage"></div>
+        </div>
+    </div>
+{{!-- <img src="/images/download (1).png" alt="bjjhbjbjbj"> --}}
+    <footer>
+        <h4>thank you! please visit again</h2>
+        <p>&copy; adarsh jha | served by :- <a href="https://openweathermap.org/">open weather</a></p>
+    </footer>
+</body>
+    <script>
+        let input = document.getElementById('cityInput')
+        let form = document.getElementById('weatherForm')
+        let weatherResult = document.getElementById('weatherResult')
+        let weatherImage = document.getElementById('weatherImage')
+
+        form.addEventListener('submit', async (e) =>{
+            e.preventDefault()
+            let city = input.value
+
+            if(city === ''){
+                alert('type city name')
+            }
+            let url = `https://api.openweathermap.org/data/2.5/weather?q=Patna&appid=15facce67a51ac42cf416ee97a10bfc2`
+
+            // console.log(city);
+            try {
+                let response = await fetch(`/weather?city=${city}`)
+                let data = await response.json()
+                console.log(data.clouds.all);
+                weatherResult.innerHTML = `<p>temp: ${(data.main.temp - 273).toFixed(2)}&deg;C</p>`
+
+                if(data.clouds.all >= 80){
+                    weatherImage.innerHTML = `<p><img src='/images/download (1).png' alt="" id="cloud"></p>`
+                } else if(data.clouds.all < 80){
+                    weatherImage.innerHTML = `<p><img src='/images/download (2).png' alt="" id="sun"></p>`
+                } 
+            } catch (error) {
+                console.log(error);
+            }
+        })
+    </script>
+</html>
